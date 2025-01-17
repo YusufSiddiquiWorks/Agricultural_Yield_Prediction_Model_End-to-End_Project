@@ -1,1 +1,1 @@
-# Agricultural_Yield_Predicition_Model_End-to-End_Project
+# Agricultural_Yield_Prediction_Model_End-to-End_Project
