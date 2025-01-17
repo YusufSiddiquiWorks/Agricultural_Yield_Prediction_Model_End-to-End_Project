@@ -9,11 +9,11 @@ on:
     branches:
       - main
     paths:
-      -'Deployer/**'
-      -'app.py'
-      -'requirements.txt'
-      -'startup.txt'
-      -'templates/**'
+      -Deployer/**
+      -app.py
+      -requirements.txt
+      -startup.txt
+      -templates/**
   workflow_dispatch:
 
 jobs:
