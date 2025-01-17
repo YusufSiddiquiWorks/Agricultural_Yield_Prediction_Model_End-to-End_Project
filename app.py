@@ -18,8 +18,8 @@ def home():
 def predict():
     if request.method == 'POST':
         try:
-            Rainfall_mm = float(request.form['Rainfall_mm'])
-            Temperature_Celsius = float(request.form['Temperature_Celsius'])
+            Rainfall_mm = int(request.form['Rainfall_mm'])
+            Temperature_Celsius = int(request.form['Temperature_Celsius'])
             Fertilizer_Used = 1 if 'Fertilizer_Used' in request.form else 0
             Irrigation_Used = 1 if 'Irrigation_Used' in request.form else 0
             Days_to_Harvest = int(request.form['Days_to_Harvest'])
