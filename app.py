@@ -8,7 +8,6 @@ app = application
 
 # Load the pre-trained model and scaler
 model = pickle.load(open('XBGR_Model_Agriculture_Yield_Prediction.pkl', 'rb'))
-scaler = pickle.load(open('Scalar_Model_Agriculture_Yield_Prediction.pkl', 'rb'))
 
 @app.route('/')
 def home():
@@ -18,8 +17,8 @@ def home():
 def predict():
     if request.method == 'POST':
         try:
-            Rainfall_mm = int(request.form['Rainfall_mm'])
-            Temperature_Celsius = int(request.form['Temperature_Celsius'])
+            Rainfall_mm = float(request.form['Rainfall_mm'])
+            Temperature_Celsius = float(request.form['Temperature_Celsius'])
             Fertilizer_Used = 1 if 'Fertilizer_Used' in request.form else 0
             Irrigation_Used = 1 if 'Irrigation_Used' in request.form else 0
             Days_to_Harvest = int(request.form['Days_to_Harvest'])
@@ -63,10 +62,10 @@ def predict():
                                    Weather_Condition_Rainy, Weather_Condition_Sunny]).reshape(1, -1) 
 
             # Scale the input data using the loaded scaler
-            scaled_input = scaler.transform(input_data)
+            
 
             # Prediction
-            result = model.predict(scaled_input)[0]
+            result = model.predict(input_data)[0]
             return render_template('prediction.html', prediction_text=f'Predicted Yield: {result:.2f} tons per hectare')
         except ValueError:
             return render_template('index.html', prediction_text="Please enter valid numerical values for Rainfall and Temperature.")
