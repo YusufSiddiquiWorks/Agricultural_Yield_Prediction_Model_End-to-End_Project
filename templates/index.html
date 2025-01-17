@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agricultural Yield Prediction</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-image: url('{{ url_for('static', filename='home_background.jpg') }}'); 
+            background-size: cover; 
+            color: white;
+            text-align: center;
+            padding: 50px;
+        }
+        form {
+            background: rgba(0, 0, 0, 0.6);
+            padding: 20px;
+            border-radius: 10px;
+            display: inline-block;
+        }
+        input, select {
+            margin: 10px 0;
+            padding: 10px;
+            width: 90%;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+
+<h1><span style="color: black;">Agricultural Yield Prediction</span>
+</h1>
+<form action="/predict" method="post">
+    <label for="Rainfall_mm">Rainfall (mm):</label>
+    <input type="text" name="Rainfall_mm" required><br>
+
+    <label for="Temperature_Celsius">Temperature (Celsius):</label>
+    <input type="text" name="Temperature_Celsius" required><br>
+
+    <label for="Days_to_Harvest">Days to Harvest:</label>
+    <input type="text" name="Days_to_Harvest" required><br>
+
+    <label for="Region">Region:</label>
+    <select name="Region">
+        <option value="East">East</option>
+        <option value="North">North</option>
+        <option value="South">South</option>
+        <option value="West">West</option>
+    </select><br>
+
+    <label for="Soil_Type">Soil Type:</label>
+    <select name="Soil_Type">
+        <option value="Chalky">Chalky</option>
+        <option value="Clay">Clay</option>
+        <option value="Loam">Loam</option>
+        <option value="Peaty">Peaty</option>
+        <option value="Sandy">Sandy</option>
+        <option value="Silt">Silt</option>
+    </select><br>
+
+    <label for="Crop">Crop Type:</label>
+    <select name="Crop">
+        <option value="Barley">Barley</option>
+        <option value="Cotton">Cotton</option>
+        <option value="Maize">Maize</option>
+        <option value="Rice">Rice</option>
+        <option value="Soybean">Soybean</option>
+        <option value="Wheat">Wheat</option>
+    </select><br>
+
+    <label for="Weather_Condition">Weather Condition:</label>
+    <select name="Weather_Condition">
+        <option value="Cloudy">Cloudy</option>
+        <option value="Rainy">Rainy</option>
+        <option value="Sunny">Sunny</option>
+    </select><br>
+
+    <label><input type="checkbox" name="Fertilizer_Used"> Fertilizer Used</label><br>
+    <label><input type="checkbox" name="Irrigation_Used"> Irrigation Used</label><br>
+
+    <button type="submit">Predict Yield</button>
+</form>
+
+<p>{{ prediction_text }}</p>
+
+</body>
+</html>

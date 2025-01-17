@@ -1,0 +1,80 @@
+from flask import Flask, request, render_template
+import pickle
+import numpy as np
+import pandas as pd
+from xgboost import XGBRegressor
+from sklearn.preprocessing import StandardScaler
+
+application = Flask(__name__)
+app = application
+
+# Load the pre-trained model and scaler
+model = pickle.load(open('XBGR_Model_Agriculture_Yield_Prediction.pkl', 'rb'))
+scaler = pickle.load(open('Scalar_Model_Agriculture_Yield_Prediction.pkl', 'rb'))
+
+@app.route('/')
+def home():
+    return render_template('index.html')
+
+@app.route('/predict', methods=['POST'])
+def predict():
+    if request.method == 'POST':
+        try:
+            Rainfall_mm = float(request.form['Rainfall_mm'])
+            Temperature_Celsius = float(request.form['Temperature_Celsius'])
+            Fertilizer_Used = 1 if 'Fertilizer_Used' in request.form else 0
+            Irrigation_Used = 1 if 'Irrigation_Used' in request.form else 0
+            Days_to_Harvest = int(request.form['Days_to_Harvest'])
+
+            # One-hot encoding for Region
+            region = request.form['Region']
+            Region_East = 1 if region == 'East' else 0
+            Region_North = 1 if region == 'North' else 0
+            Region_South = 1 if region == 'South' else 0
+            Region_West = 1 if region == 'West' else 0
+
+            # One-hot encoding for Soil Type
+            soil_type = request.form['Soil_Type']
+            Soil_Type_Chalky = 1 if soil_type == 'Chalky' else 0
+            Soil_Type_Clay = 1 if soil_type == 'Clay' else 0
+            Soil_Type_Loam = 1 if soil_type == 'Loam' else 0
+            Soil_Type_Peaty = 1 if soil_type == 'Peaty' else 0
+            Soil_Type_Sandy = 1 if soil_type == 'Sandy' else 0
+            Soil_Type_Silt = 1 if soil_type == 'Silt' else 0
+
+            # One-hot encoding for Crop
+            crop = request.form['Crop']
+            Crop_Barley = 1 if crop == 'Barley' else 0
+            Crop_Cotton = 1 if crop == 'Cotton' else 0
+            Crop_Maize = 1 if crop == 'Maize' else 0
+            Crop_Rice = 1 if crop == 'Rice' else 0
+            Crop_Soybean = 1 if crop == 'Soybean' else 0
+            Crop_Wheat = 1 if crop == 'Wheat' else 0
+
+            # One-hot encoding for Weather Condition
+            weather = request.form['Weather_Condition']
+            Weather_Condition_Cloudy = 1 if weather == 'Cloudy' else 0
+            Weather_Condition_Rainy = 1 if weather == 'Rainy' else 0
+            Weather_Condition_Sunny = 1 if weather == 'Sunny' else 0
+
+            # Prepare input data for scaling
+            input_data = np.array([Rainfall_mm, Temperature_Celsius, Fertilizer_Used, Irrigation_Used, Days_to_Harvest,
+                                   Region_East, Region_North, Region_South, Region_West, Soil_Type_Chalky, Soil_Type_Clay,
+                                   Soil_Type_Loam, Soil_Type_Peaty, Soil_Type_Sandy, Soil_Type_Silt, Crop_Barley,
+                                   Crop_Cotton, Crop_Maize, Crop_Rice, Crop_Soybean, Crop_Wheat, Weather_Condition_Cloudy,
+                                   Weather_Condition_Rainy, Weather_Condition_Sunny]).reshape(1, -1) 
+
+            # Scale the input data using the loaded scaler
+            scaled_input = scaler.transform(input_data)
+
+            # Prediction
+            result = model.predict(scaled_input)[0]
+            return render_template('prediction.html', prediction_text=f'Predicted Yield: {result:.2f} tons per hectare')
+        except ValueError:
+            return render_template('index.html', prediction_text="Please enter valid numerical values for Rainfall and Temperature.")
+    else:
+        return render_template('index.html')
+
+
+if __name__ == "__main__":
+    app.run(host='0.0.0.0')

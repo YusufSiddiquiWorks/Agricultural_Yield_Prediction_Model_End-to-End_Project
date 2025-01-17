@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prediction Result</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-image: url('{{ url_for('static', filename='predict_background.jpg') }}'); 
+            background-size: cover;
+            text-align: center;
+            color: white;
+            padding: 50px;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Prediction Result</h1>
+    <p>{{ prediction_text }}</p>
+    <a href="/">Go Back to Home</a> 
+
+</body>
+</html>
