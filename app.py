@@ -2,12 +2,15 @@ from flask import Flask, request, render_template
 import pickle
 import numpy as np
 import pandas as pd
+from sklearn.preprocessing import StandardScaler
+import xgboost
 
 application = Flask(__name__)
 app = application
 
 # Load the pre-trained model and scaler
 model = pickle.load(open('XBGR_Model_Agriculture_Yield_Prediction.pkl', 'rb'))
+scaler = pickle.load(open('Scalar_Model_Agriculture_Yield_Prediction.pkl', 'rb'))
 
 @app.route('/')
 def home():
@@ -59,13 +62,13 @@ def predict():
                                    Region_East, Region_North, Region_South, Region_West, Soil_Type_Chalky, Soil_Type_Clay,
                                    Soil_Type_Loam, Soil_Type_Peaty, Soil_Type_Sandy, Soil_Type_Silt, Crop_Barley,
                                    Crop_Cotton, Crop_Maize, Crop_Rice, Crop_Soybean, Crop_Wheat, Weather_Condition_Cloudy,
-                                   Weather_Condition_Rainy, Weather_Condition_Sunny]).reshape(1, -1) 
+                                   Weather_Condition_Rainy, Weather_Condition_Sunny]).reshape(1,-1)
 
             # Scale the input data using the loaded scaler
-            
+            scaled = scaler.transform(input_data)
 
             # Prediction
-            result = model.predict(input_data)[0]
+            result = model.predict(scaled)[0]
             return render_template('prediction.html', prediction_text=f'Predicted Yield: {result:.2f} tons per hectare')
         except ValueError:
             return render_template('index.html', prediction_text="Please enter valid numerical values for Rainfall and Temperature.")
