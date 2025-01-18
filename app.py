@@ -14,18 +14,32 @@ scaler = pickle.load(open('Scalar_Model_Agriculture_Yield_Prediction.pkl', 'rb')
 
 @app.route('/')
 def home():
-    return render_template('index.html')
+    return render_template('home.html')  # Home page for initial greeting or instructions
+
+@app.route('/index', methods=['GET'])
+def index():
+    return render_template('index.html')  # Index page where user inputs data for prediction
 
 @app.route('/predict', methods=['POST'])
 def predict():
     if request.method == 'POST':
         try:
-            Rainfall_mm = float(request.form['Rainfall_mm'])
+            # Retrieve form data and validate
             Temperature_Celsius = float(request.form['Temperature_Celsius'])
+            if not (-10 <= Temperature_Celsius <= 50):
+                raise ValueError("Temperature must be between -10°C and 50°C.")
+            
+            Rainfall_mm = float(request.form['Rainfall_mm'])
+            if not (0 <= Rainfall_mm <= 500):
+                raise ValueError("Rainfall must be between 0 mm and 500 mm.")
+            
+            Days_to_Harvest = int(request.form['Days_to_Harvest'])
+            if not (1 <= Days_to_Harvest <= 365):
+                raise ValueError("Days to Harvest must be between 1 and 365 days.")
+            
             Fertilizer_Used = 1 if 'Fertilizer_Used' in request.form else 0
             Irrigation_Used = 1 if 'Irrigation_Used' in request.form else 0
-            Days_to_Harvest = int(request.form['Days_to_Harvest'])
-
+            
             # One-hot encoding for Region
             region = request.form['Region']
             Region_East = 1 if region == 'East' else 0
@@ -66,15 +80,20 @@ def predict():
 
             # Scale the input data using the loaded scaler
             scaled = scaler.transform(input_data)
-
+            
+            if Rainfall_mm <= 10 and Irrigation_Used == 0:
+                raise ValueError('Yield Not Possible due to Insufficient Water')
+            elif Days_to_Harvest <= 30 :
+                raise ValueError('Yield Not Possible due to Insufficient Growth Period')
+            
+            else:
             # Prediction
-            result = model.predict(scaled)[0]
-            return render_template('prediction.html', prediction_text=f'Predicted Yield: {result:.2f} tons per hectare')
-        except ValueError:
-            return render_template('index.html', prediction_text="Please enter valid numerical values for Rainfall and Temperature.")
+                result = model.predict(scaled)[0]
+                return render_template('prediction.html', prediction_text=f'{result:.2f} tons per hectare')
+        except ValueError as e:
+            return render_template('index.html', prediction_text=str(e))
     else:
         return render_template('index.html')
 
-
 if __name__ == "__main__":
-    app.run(host='0.0.0.0',port=8000)
+    app.run(host='0.0.0.0', port=8000, debug=True)
