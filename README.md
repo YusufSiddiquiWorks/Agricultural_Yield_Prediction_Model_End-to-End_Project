@@ -14,7 +14,7 @@ Access the live application here: [Agriculture Yield Prediction App](https://agr
 
 ## Dataset
 The model is trained on a dataset featuring:
-- **Soil Properties**: pH, organic matter content, etc.
+- **Properties**: Soil Type, Region, Crop Type.
 - **Weather Conditions**: Temperature, rainfall, and more.
 - **Crop Management Practices**: Fertilizer use, irrigation, etc.
 
