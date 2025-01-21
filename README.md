@@ -1,7 +1,7 @@
 # Agriculture Yield Prediction Regression Model
 
 ## Project Overview
-This solo project focuses on predicting agricultural yield using a regression model. The objective is to support farmers and policymakers by providing data-driven insights to optimize agricultural practices and increase productivity.
+This solo project showcases my expertise in data science and machine learning by developing a robust regression model for agricultural yield prediction. The project covers the entire workflow, including exploratory data analysis (EDA), data preprocessing, feature engineering, model building, and hyperparameter tuning, culminating in deployment on Azure.
 
 ## Features
 - **Yield Prediction**: Accurately predicts yield based on various input factors such as soil, weather, and crop management practices.
@@ -13,7 +13,7 @@ Access the live application here: [Agriculture Yield Prediction App](https://agr
 
 ## Dataset
 The model uses a dataset that includes:
-- **Soil Properties**: pH, organic matter content, etc.
+- **Properties**: Soil Types, Soil Regions, Crop Types etc.
 - **Weather Conditions**: Temperature, rainfall, etc.
 - **Crop Management Practices**: Fertilizer use, irrigation, etc.
 
@@ -63,9 +63,9 @@ For more details, refer to the GitHub Actions workflows in the [.github/workflow
 
 ## Results
 Key performance metrics for the model:
-- **Mean Absolute Error (MAE)**: X
-- **Root Mean Squared Error (RMSE)**: Y
-- **R² Score**: Z
+- Root Mean Squared Error: 0.5041
+- Mean Absolute Error: 0.4024
+- R2 Score: 0.9117
 
 ## Future Work
 - **Model Enhancements**: Explore additional features and improve accuracy.
