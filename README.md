@@ -90,7 +90,7 @@ This project serves to demonstrate my comprehensive skill set in:
 - Dataset sourced from [Kaggle](https://www.kaggle.com/datasets/samuelotiattakorah/agriculture-crop-yield).
 
 ## License
-This project is licensed under the Apache2.0 License.
+This project is licensed under the MIT License.
 ---
 #Suggestion are always appreciated -
 For queries or feedback, please contact yusufsiddiquiwork@icloud.com.
