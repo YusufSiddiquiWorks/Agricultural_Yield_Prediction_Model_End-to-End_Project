@@ -72,5 +72,4 @@ Key performance metrics for the model:
 - **UI Improvements**: Enhance the web interface for better user experience.
 - **Broader Adaptation**: Extend model capabilities for various crops and regions.
 
-## Contributing
-As this is a solo project, contributions are not currently op
+#Suggestion are always appreciated - yusufsiddiquiwork@icloud.com
