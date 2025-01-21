@@ -12,6 +12,15 @@ app = application
 model = pickle.load(open('XBGR_Model_Agriculture_Yield_Prediction.pkl', 'rb'))
 scaler = pickle.load(open('Scalar_Model_Agriculture_Yield_Prediction.pkl', 'rb'))
 
+# Define the feature names used during training
+feature_names = [
+    'Rainfall_mm', 'Temperature_Celsius', 'Fertilizer_Used', 'Irrigation_Used', 'Days_to_Harvest',
+    'Region_East', 'Region_North', 'Region_South', 'Region_West',
+    'Soil_Type_Chalky', 'Soil_Type_Clay', 'Soil_Type_Loam', 'Soil_Type_Peaty', 'Soil_Type_Sandy', 'Soil_Type_Silt',
+    'Crop_Barley', 'Crop_Cotton', 'Crop_Maize', 'Crop_Rice', 'Crop_Soybean', 'Crop_Wheat',
+    'Weather_Condition_Cloudy', 'Weather_Condition_Rainy', 'Weather_Condition_Sunny'
+]
+
 @app.route('/')
 def home():
     return render_template('home.html')  # Home page for initial greeting or instructions
@@ -30,8 +39,8 @@ def predict():
                 raise ValueError("Temperature must be between -10°C and 50°C.")
             
             Rainfall_mm = float(request.form['Rainfall_mm'])
-            if not (0 <= Rainfall_mm <= 500):
-                raise ValueError("Rainfall must be between 0 mm and 500 mm.")
+            if not (0 <= Rainfall_mm <= 1500):
+                raise ValueError("Rainfall must be between 0 mm and 1500 mm.")
             
             Days_to_Harvest = int(request.form['Days_to_Harvest'])
             if not (1 <= Days_to_Harvest <= 365):
@@ -71,25 +80,49 @@ def predict():
             Weather_Condition_Rainy = 1 if weather == 'Rainy' else 0
             Weather_Condition_Sunny = 1 if weather == 'Sunny' else 0
 
-            # Prepare input data for scaling
-            input_data = np.array([Rainfall_mm, Temperature_Celsius, Fertilizer_Used, Irrigation_Used, Days_to_Harvest,
-                                   Region_East, Region_North, Region_South, Region_West, Soil_Type_Chalky, Soil_Type_Clay,
-                                   Soil_Type_Loam, Soil_Type_Peaty, Soil_Type_Sandy, Soil_Type_Silt, Crop_Barley,
-                                   Crop_Cotton, Crop_Maize, Crop_Rice, Crop_Soybean, Crop_Wheat, Weather_Condition_Cloudy,
-                                   Weather_Condition_Rainy, Weather_Condition_Sunny]).reshape(1,-1)
+            # Prepare input data as a dictionary
+            input_data_dict = {
+                'Rainfall_mm': Rainfall_mm,
+                'Temperature_Celsius': Temperature_Celsius,
+                'Fertilizer_Used': Fertilizer_Used,
+                'Irrigation_Used': Irrigation_Used,
+                'Days_to_Harvest': Days_to_Harvest,
+                'Region_East': Region_East,
+                'Region_North': Region_North,
+                'Region_South': Region_South,
+                'Region_West': Region_West,
+                'Soil_Type_Chalky': Soil_Type_Chalky,
+                'Soil_Type_Clay': Soil_Type_Clay,
+                'Soil_Type_Loam': Soil_Type_Loam,
+                'Soil_Type_Peaty': Soil_Type_Peaty,
+                'Soil_Type_Sandy': Soil_Type_Sandy,
+                'Soil_Type_Silt': Soil_Type_Silt,
+                'Crop_Barley': Crop_Barley,
+                'Crop_Cotton': Crop_Cotton,
+                'Crop_Maize': Crop_Maize,
+                'Crop_Rice': Crop_Rice,
+                'Crop_Soybean': Crop_Soybean,
+                'Crop_Wheat': Crop_Wheat,
+                'Weather_Condition_Cloudy': Weather_Condition_Cloudy,
+                'Weather_Condition_Rainy': Weather_Condition_Rainy,
+                'Weather_Condition_Sunny': Weather_Condition_Sunny
+            }
+
+            # Convert input data to pandas DataFrame with feature names
+            input_data = pd.DataFrame([input_data_dict], columns=feature_names)
 
             # Scale the input data using the loaded scaler
             scaled = scaler.transform(input_data)
             
             if Rainfall_mm <= 10 and Irrigation_Used == 0:
                 raise ValueError('Yield Not Possible due to Insufficient Water')
-            elif Days_to_Harvest <= 30 :
+            elif Days_to_Harvest <= 30:
                 raise ValueError('Yield Not Possible due to Insufficient Growth Period')
             
-            else:
             # Prediction
-                result = model.predict(scaled)[0]
-                return render_template('prediction.html', prediction_text=f'{result:.2f} tons per hectare')
+            result = model.predict(scaled)[0]
+            return render_template('prediction.html', prediction_text=f'{result:.2f} tons per hectare')
+        
         except ValueError as e:
             return render_template('index.html', prediction_text=str(e))
     else:
