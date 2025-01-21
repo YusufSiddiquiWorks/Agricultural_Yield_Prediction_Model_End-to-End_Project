@@ -88,6 +88,7 @@
             border-radius: 5px;
             font-size: 1rem;
         }
+
         select {
             margin: 10px 0;
             padding: 10px;
@@ -119,16 +120,16 @@
     <div class="container">
         <h1>Agricultural Yield Prediction</h1>
         <form action="/predict" method="post">
-            <label for="Rainfall_mm">Rainfall (mm):</label>
-            <input type="text" name="Rainfall_mm" required><br>
+            <label for="Rainfall_mm">Rainfall (mm)</label>
+            <input type="text" name="Rainfall_mm" placeholder="Rainfall must be between 0 mm and 500 mm." required><br>
 
-            <label for="Temperature_Celsius">Temperature (Celsius):</label>
-            <input type="text" name="Temperature_Celsius" required><br>
+            <label for="Temperature_Celsius">Temperature (Celsius)</label>
+            <input type="text" name="Temperature_Celsius" placeholder="Temperature must be between -10°C and 50°C." required><br>
 
-            <label for="Days_to_Harvest">Days to Harvest:</label>
-            <input type="text" name="Days_to_Harvest" required><br>
+            <label for="Days_to_Harvest">Days till Harvest</label>
+            <input type="text" name="Days_to_Harvest" placeholder="Days to Harvest must be between 1 and 365 days." required><br>
 
-            <label for="Region">Region:</label>
+            <label for="Region">Region</label>
             <select name="Region" required>
                 <option value="East">East</option>
                 <option value="North">North</option>
@@ -136,7 +137,7 @@
                 <option value="West">West</option>
             </select><br>
 
-            <label for="Soil_Type">Soil Type:</label>
+            <label for="Soil_Type">Soil Type</label>
             <select name="Soil_Type" required>
                 <option value="Chalky">Chalky</option>
                 <option value="Clay">Clay</option>
@@ -146,7 +147,7 @@
                 <option value="Silt">Silt</option>
             </select><br>
 
-            <label for="Crop">Crop Type:</label>
+            <label for="Crop">Crop Type</label>
             <select name="Crop" required>
                 <option value="Barley">Barley</option>
                 <option value="Cotton">Cotton</option>
@@ -156,7 +157,7 @@
                 <option value="Wheat">Wheat</option>
             </select><br>
 
-            <label for="Weather_Condition">Weather Condition:</label>
+            <label for="Weather_Condition">Weather Condition</label>
             <select name="Weather_Condition" required>
                 <option value="Cloudy">Cloudy</option>
                 <option value="Rainy">Rainy</option>
