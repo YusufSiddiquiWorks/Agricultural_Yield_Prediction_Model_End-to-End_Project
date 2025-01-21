@@ -125,7 +125,7 @@
             customMessage = `Unfortunately, it looks like the yield is below average at ${yieldValue} tons per hectare. We understand the challenges this may bring, but with the right adjustments, there's always potential for improvement.`;
         } else if (yieldValue >= 2 && yieldValue <= 5) {
             backgroundUrl = "{{ url_for('static', filename='medium_yield.jpg') }}";
-            customMessage = `Great job! Your yield is decent at ${yieldValue} tons per hectare. This shows that you're on the right track. With a bit more optimization, you could see even better results next season.`;
+            customMessage = `Great job! Your yield is decent at ${yieldValue} tons per hectare. This shows that you're on the right track. With a bit more optimization, you could see even better results.`;
         } else {
             backgroundUrl = "{{ url_for('static', filename='high_yield.jpg') }}";
             customMessage = `Congratulations! You've achieved an excellent yield of ${yieldValue} tons per hectare. This is a great outcome, and it reflects your hard work and the favorable conditions. Keep up the amazing work!`;
